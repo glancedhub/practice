@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automation Testing Practice</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 24px;
+    color: #1f2937;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 32px;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .card h2 {
+    margin-top: 0;
+    font-size: 18px;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 8px;
+  }
+  label {
+    display: block;
+    margin: 6px 0;
+    cursor: pointer;
+  }
+  select, button, input[type="text"] {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+  }
+  button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 4px 4px 4px 0;
+  }
+  button:hover {
+    background: #1d4ed8;
+  }
+  .full-width {
+    grid-column: 1 / -1;
+  }
+  iframe {
+    width: 100%;
+    height: 200px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+  }
+  #checkboxResult, #radioResult, #staticDropdownResult, #dynamicDropdownResult, #alertResult, #promptResult, #confirmResult {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #059669;
+    min-height: 18px;
+  }
+  #newWindowLink {
+    display: inline-block;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Automation Testing Practice App</h1>
+<p class="subtitle">A sandbox for practicing checkboxes, radios, dropdowns, iframes, alerts, and window switching</p>
+
+<div class="container">
+
+  <!-- CHECKBOXES -->
+  <div class="card">
+    <h2>Checkboxes</h2>
+    <label><input type="checkbox" id="cb1" class="fruitCheckbox" value="Apple"> Apple</label>
+    <label><input type="checkbox" id="cb2" class="fruitCheckbox" value="Banana"> Banana</label>
+    <label><input type="checkbox" id="cb3" class="fruitCheckbox" value="Mango"> Mango</label>
+    <label><input type="checkbox" id="cb4" class="fruitCheckbox" value="Orange"> Orange</label>
+    <button id="checkboxSubmit">Show Selected</button>
+    <div id="checkboxResult"></div>
+  </div>
+
+  <!-- RADIO BUTTONS -->
+  <div class="card">
+    <h2>Radio Buttons</h2>
+    <label><input type="radio" name="gender" class="genderRadio" value="Male"> Male</label>
+    <label><input type="radio" name="gender" class="genderRadio" value="Female"> Female</label>
+    <label><input type="radio" name="gender" class="genderRadio" value="Other"> Other</label>
+    <button id="radioSubmit">Show Selected</button>
+    <div id="radioResult"></div>
+  </div>
+
+  <!-- STATIC DROPDOWN -->
+  <div class="card">
+    <h2>Static Dropdown</h2>
+    <select id="staticDropdown">
+      <option value="">-- Select a country --</option>
+      <option value="India">India</option>
+      <option value="USA">USA</option>
+      <option value="UK">UK</option>
+      <option value="Canada">Canada</option>
+      <option value="Australia">Australia</option>
+    </select>
+    <div id="staticDropdownResult"></div>
+  </div>
+
+  <!-- DYNAMIC DROPDOWN -->
+  <div class="card">
+    <h2>Dynamic Dropdown</h2>
+    <select id="countrySelect">
+      <option value="">-- Select a country --</option>
+      <option value="India">India</option>
+      <option value="USA">USA</option>
+      <option value="UK">UK</option>
+    </select>
+    <select id="citySelect">
+      <option value="">-- Select country first --</option>
+    </select>
+    <div id="dynamicDropdownResult"></div>
+  </div>
+
+  <!-- ALERTS -->
+  <div class="card">
+    <h2>JavaScript Alerts</h2>
+    <button id="infoAlertBtn">Information Alert</button>
+    <button id="confirmAlertBtn">Confirmation Alert</button>
+    <button id="promptAlertBtn">Prompt Alert</button>
+    <div id="alertResult"></div>
+    <div id="confirmResult"></div>
+    <div id="promptResult"></div>
+  </div>
+
+  <!-- WINDOW / TAB SWITCHING -->
+  <div class="card">
+    <h2>Window / Tab Switching</h2>
+    <p style="font-size:13px; color:#6b7280;">Opens a new window/tab for practicing window handle switching.</p>
+    <button id="openNewWindowBtn">Open New Window</button>
+    <a id="newWindowLink" href="https://www.glancedhub.com/" target="_blank" rel="noopener">Open glancedhub.com directly</a>
+  </div>
+
+  <!-- IFRAME -->
+  <div class="card full-width">
+    <h2>IFrame</h2>
+    <iframe id="practiceIframe" src="https://www.glancedhub.com/" title="Embedded practice site"></iframe>
+  </div>
+
+</div>
+
+<script>
+  // Checkboxes
+  document.getElementById("checkboxSubmit").addEventListener("click", function () {
+    const selected = Array.from(document.querySelectorAll(".fruitCheckbox:checked")).map(cb => cb.value);
+    document.getElementById("checkboxResult").textContent = selected.length
+      ? "Selected: " + selected.join(", ")
+      : "No checkboxes selected.";
+  });
+
+  // Radio buttons
+  document.getElementById("radioSubmit").addEventListener("click", function () {
+    const selected = document.querySelector(".genderRadio:checked");
+    document.getElementById("radioResult").textContent = selected
+      ? "Selected: " + selected.value
+      : "No option selected.";
+  });
+
+  // Static dropdown
+  document.getElementById("staticDropdown").addEventListener("change", function () {
+    document.getElementById("staticDropdownResult").textContent = this.value
+      ? "You selected: " + this.value
+      : "";
+  });
+
+  // Dynamic dropdown
+  const cityMap = {
+    India: ["Mumbai", "Delhi", "Bengaluru", "Hyderabad"],
+    USA: ["New York", "Los Angeles", "Chicago", "Houston"],
+    UK: ["London", "Manchester", "Birmingham", "Leeds"]
+  };
+  const countrySelect = document.getElementById("countrySelect");
+  const citySelect = document.getElementById("citySelect");
+
+  countrySelect.addEventListener("change", function () {
+    const country = this.value;
+    citySelect.innerHTML = "";
+    if (!country) {
+      citySelect.innerHTML = '<option value="">-- Select country first --</option>';
+      document.getElementById("dynamicDropdownResult").textContent = "";
+      return;
+    }
+    const defaultOpt = document.createElement("option");
+    defaultOpt.value = "";
+    defaultOpt.textContent = "-- Select a city --";
+    citySelect.appendChild(defaultOpt);
+
+    cityMap[country].forEach(city => {
+      const opt = document.createElement("option");
+      opt.value = city;
+      opt.textContent = city;
+      citySelect.appendChild(opt);
+    });
+  });
+
+  citySelect.addEventListener("change", function () {
+    document.getElementById("dynamicDropdownResult").textContent = this.value
+      ? "You selected: " + countrySelect.value + " -> " + this.value
+      : "";
+  });
+
+  // Alerts
+  document.getElementById("infoAlertBtn").addEventListener("click", function () {
+    alert("This is an information alert.");
+    document.getElementById("alertResult").textContent = "Information alert was shown and dismissed.";
+  });
+
+  document.getElementById("confirmAlertBtn").addEventListener("click", function () {
+    const result = confirm("Do you confirm this action?");
+    document.getElementById("confirmResult").textContent = result
+      ? "You clicked OK (confirmed)."
+      : "You clicked Cancel (dismissed).";
+  });
+
+  document.getElementById("promptAlertBtn").addEventListener("click", function () {
+    const result = prompt("Please enter your name:");
+    document.getElementById("promptResult").textContent = result
+      ? "You entered: " + result
+      : "Prompt was cancelled or left empty.";
+  });
+
+  // Window switching
+  document.getElementById("openNewWindowBtn").addEventListener("click", function () {
+    window.open("https://www.glancedhub.com/", "_blank");
+  });
+</script>
+
+</body>
+</html>
